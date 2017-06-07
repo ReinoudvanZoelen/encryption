@@ -83,10 +83,10 @@ public class Assignment_1 {
         return decrypted;
     }
 
-    private PrivateKey readPrivateKeyFromFile() throws Exception {
+    public static PrivateKey readPrivateKeyFromFile() throws Exception {
         System.out.println("\nReading the private key from the file");
 
-        FileInputStream fis = new FileInputStream(new File(this.Private_Key_File));
+        FileInputStream fis = new FileInputStream(new File("Private.key"));
         ObjectInputStream ois = new ObjectInputStream(fis);
 
         PrivateKey privateKey = null;
@@ -99,7 +99,7 @@ public class Assignment_1 {
             System.out.println("Private exponent " + exp);
 
             RSAPrivateKeySpec rsaPrivateKeySpec = new RSAPrivateKeySpec(mod, exp);
-            KeyFactory keyFactory = KeyFactory.getInstance(Encryption_Type);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             privateKey = keyFactory.generatePrivate(rsaPrivateKeySpec);
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,10 +112,10 @@ public class Assignment_1 {
 
     }
 
-    private PublicKey readPublicKeyFromFile() throws Exception {
+    public static PublicKey readPublicKeyFromFile() throws Exception {
         System.out.println("\nReading the public key from the file");
 
-        FileInputStream fis = new FileInputStream(new File(this.Public_Key_File));
+        FileInputStream fis = new FileInputStream(new File("Public.key"));
         ObjectInputStream ois = new ObjectInputStream(fis);
 
         PublicKey publicKey = null;
@@ -128,7 +128,7 @@ public class Assignment_1 {
             System.out.println("Public exponent: " + exp + "\n");
 
             RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(mod, exp);
-            KeyFactory keyFactory = KeyFactory.getInstance(Encryption_Type);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             publicKey = keyFactory.generatePublic(rsaPublicKeySpec);
         } catch (Exception e) {
             e.printStackTrace();
