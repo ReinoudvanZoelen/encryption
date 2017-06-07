@@ -31,7 +31,7 @@ public class Assignment_1 {
     }
 
     private void generateKeypair() throws Exception {
-        System.out.println("\nKeypair is being generated");
+        System.out.println("\nGenerating keypair");
 
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(this.Encryption_Type);
         keyPairGenerator.initialize(1024);
@@ -44,8 +44,8 @@ public class Assignment_1 {
         RSAPublicKeySpec publicKeySpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
         RSAPrivateKeySpec privateKeySpec = keyFactory.getKeySpec(privateKey, RSAPrivateKeySpec.class);
 
-        System.out.println("\nKeys have been generated.\n");
-        System.out.println("Public Exponent: " + publicKeySpec.getPublicExponent() + "\n");
+        System.out.println("Public Exponent: " + publicKeySpec.getPublicExponent());
+        System.out.println("Private Exponent: " + privateKeySpec.getPrivateExponent());
 
         this.writeToFile(this.Public_Key_File, publicKeySpec.getModulus(), publicKeySpec.getPublicExponent());
         this.writeToFile(this.Private_Key_File, privateKeySpec.getModulus(), privateKeySpec.getPrivateExponent());
@@ -54,7 +54,7 @@ public class Assignment_1 {
 
     private byte[] encryptData(String data) throws Exception {
         System.out.println("\nStarting Encryption");
-        System.out.println("Data before encryption: " + data + "\n");
+        System.out.println("Data before encryption: " + data);
 
         byte[] dataToEncrypt = data.getBytes();
 
