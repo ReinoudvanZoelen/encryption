@@ -1,12 +1,9 @@
 package assignments;
 
 import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 
 /**
@@ -42,7 +39,7 @@ public class Assignment_3 {
     private byte[] DecryptHash(byte[] encryptedHash) throws Exception {
         System.out.println("\nStarting Decryption");
 
-        PrivateKey privateKey = Assignment_1.readPrivateKeyFromFile();
+        PrivateKey privateKey = KeyService.readPrivateKeyFromFile();
 
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);

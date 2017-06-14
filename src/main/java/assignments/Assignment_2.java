@@ -22,7 +22,7 @@ public class Assignment_2 {
         String input = ReadInputFromFile();
 
         // RSA-1 hash genereren van de input file
-        String hash = GenerateHashValue(input);
+        byte[] hash = GenerateHashValue(input);
 
         // Tweede bestand aanmaken met drie regels:
         WriteSignatureToFile(signaturer, input, hash);
@@ -39,29 +39,28 @@ public class Assignment_2 {
     }
 
 
-    private String GenerateHashValue(String input) throws Exception {
+    private byte[] GenerateHashValue(String input) throws Exception {
         System.out.println("\nGenerating the SHA-1 hash");
 
         Signature signer = Signature.getInstance("SHA1withRSA");
-        signer.initSign(Assignment_1.readPrivateKeyFromFile());
+        signer.initSign(KeyService.readPrivateKeyFromFile());
         signer.update(input.getBytes());
 
-        String hash = new String(signer.sign());
-        System.out.println(hash);
+        byte[] hash = signer.sign();
+        System.out.println(new String(hash));
 
         return hash;
     }
 
-    private void WriteSignatureToFile(String signaturer, String input, String hash) throws IOException {
+    private void WriteSignatureToFile(String signaturer, String input, byte[] hash) throws IOException {
         String fileName = "Input(SignedBy" + signaturer + ")";
 
         System.out.println("\nWriting file " + fileName);
 
         FileOutputStream fos = new FileOutputStream(fileName);
-        //ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
 
         try {
-            fos.write(new String("\nSignature length: " + hash.length()).getBytes());
+            fos.write(new String("\nSignature length: " + new String(hash).length()).getBytes());
             fos.write(new String("\nSignature: " + hash).getBytes());
             fos.write(new String("\nOriginal file below").getBytes());
             fos.write(new String("\n" + input).getBytes());
@@ -75,18 +74,16 @@ public class Assignment_2 {
         }
     }
 
-    private void WriteSignatureToIndividualFile(String hash) throws IOException {
+    private void WriteSignatureToIndividualFile(byte[] hash) throws IOException {
         System.out.println("\nWriting signature to individual file");
 
         FileOutputStream fos = new FileOutputStream("hash");
-        //ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
 
         try {
-            fos.write(hash.getBytes());
+            fos.write(hash);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            //oos.close();
             fos.close();
         }
     }
