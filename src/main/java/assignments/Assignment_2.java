@@ -42,20 +42,14 @@ public class Assignment_2 {
     private String GenerateHashValue(String input) throws Exception {
         System.out.println("\nGenerating the SHA-1 hash");
 
-
         Signature signer = Signature.getInstance("SHA1withRSA");
         signer.initSign(Assignment_1.readPrivateKeyFromFile());
         signer.update(input.getBytes());
-        return new String(signer.sign());
 
-//        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
-//        byte[] result = mDigest.digest(input.getBytes());
-//        StringBuffer sb = new StringBuffer();
-//        for (int i = 0; i < result.length; i++) {
-//            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
-//        }
-//
-//        return sb.toString();
+        String hash = new String(signer.sign());
+        System.out.println(hash);
+
+        return hash;
     }
 
     private void WriteSignatureToFile(String signaturer, String input, String hash) throws IOException {
@@ -73,6 +67,22 @@ public class Assignment_2 {
             fos.write(new String("\n" + input).getBytes());
 
             System.out.println(fileName + " has been saved");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.WriteSignatureToIndividualFile(hash);
+            fos.close();
+        }
+    }
+
+    private void WriteSignatureToIndividualFile(String hash) throws IOException {
+        System.out.println("\nWriting signature to individual file");
+
+        FileOutputStream fos = new FileOutputStream("hash");
+        //ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
+
+        try {
+            fos.write(hash.getBytes());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
