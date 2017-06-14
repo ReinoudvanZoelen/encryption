@@ -19,7 +19,7 @@ public class Assignment_1 {
     private String data = "ThisIsMyMostSecurePassword1234321";
 
     public Assignment_1(String public_Key_File, String private_Key_File, String encryption_Type) throws Exception {
-        System.out.println("===== Starting assignment 1");
+        System.out.println("\n\n\n===== Starting assignment 1");
 
         this.Public_Key_File = public_Key_File;
         this.Private_Key_File = private_Key_File;

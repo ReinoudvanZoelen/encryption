@@ -1,13 +1,9 @@
 package assignments;
 
-import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 
 /**
@@ -43,20 +39,23 @@ public class Assignment_2 {
     }
 
 
-    private String GenerateHashValue(String input) throws NoSuchAlgorithmException {
+    private String GenerateHashValue(String input) throws Exception {
         System.out.println("\nGenerating the SHA-1 hash");
-        // Compute signature
-        Signature instance = Signature.getInstance("SHA1withRSA");
 
-        // Compute digest
-        MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-        byte[] digest = sha1.digest((input).getBytes());
 
-        String output = new String(digest);
+        Signature signer = Signature.getInstance("SHA1withRSA");
+        signer.initSign(Assignment_1.readPrivateKeyFromFile());
+        signer.update(input.getBytes());
+        return new String(signer.sign());
 
-        System.out.println("SHA-1 hash: " + output);
-
-        return output;
+//        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+//        byte[] result = mDigest.digest(input.getBytes());
+//        StringBuffer sb = new StringBuffer();
+//        for (int i = 0; i < result.length; i++) {
+//            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+//        }
+//
+//        return sb.toString();
     }
 
     private void WriteSignatureToFile(String signaturer, String input, String hash) throws IOException {
@@ -65,19 +64,19 @@ public class Assignment_2 {
         System.out.println("\nWriting file " + fileName);
 
         FileOutputStream fos = new FileOutputStream(fileName);
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
+        //ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(fos));
 
         try {
-            oos.writeObject("Signature length: " + hash.length());
-            oos.writeObject("Signature: " + hash);
-            oos.writeObject("Original file:");
-            oos.writeObject(input);
+            fos.write(new String("\nSignature length: " + hash.length()).getBytes());
+            fos.write(new String("\nSignature: " + hash).getBytes());
+            fos.write(new String("\nOriginal file below").getBytes());
+            fos.write(new String("\n" + input).getBytes());
 
             System.out.println(fileName + " has been saved");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            oos.close();
+            //oos.close();
             fos.close();
         }
     }
