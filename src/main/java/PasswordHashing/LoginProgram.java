@@ -2,9 +2,9 @@ package PasswordHashing;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class LoginProgram {
 
@@ -16,8 +16,9 @@ public class LoginProgram {
 
     public void Register(String name, String password) throws NoSuchAlgorithmException {
         System.out.println("Creating a random salt value");
-        byte[] salt = new byte[32];
-        new Random().nextBytes(salt);
+        SecureRandom random = new SecureRandom();
+        byte salt[] = new byte[128];
+        random.nextBytes(salt);
 
         System.out.println("Salt value: " + new String(salt));
 
